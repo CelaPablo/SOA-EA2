@@ -19,17 +19,22 @@ public class Battery extends AppCompatActivity {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = this.registerReceiver(null, ifilter);
 
+        assert batteryStatus != null;
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
         int batteryPct = (int) (level * 100 / (float)scale);
 
         TextView battery = findViewById(R.id.battery_text);
-
         String pct = "Bateria " + batteryPct + " %";
 
         battery.setText(pct);
+        nextView();
+    }
 
+    @Override
+    public void onBackPressed() { }
+
+    private void nextView() {
         new CountDownTimer(2500, 1000) {
 
             public void onTick(long millisUntilFinished) { }
@@ -37,10 +42,8 @@ public class Battery extends AppCompatActivity {
             public void onFinish() {
                 Intent intent = new Intent(Battery.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         }.start();
     }
-
-    @Override
-    public void onBackPressed() { }
 }

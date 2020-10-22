@@ -1,33 +1,24 @@
 package com.example.soa_ea2;
 
-public class Conexion implements Runnable {
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
 
-    private String path;
-    private String action;
-    private Object user;
+public class Conexion {
 
-    public Conexion(String path, String action, Object user) {
-        this.path = path;
-        this.action = action;
-        this.user = user;
+    public Conexion() { }
+
+    public boolean checkConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(!isConnected) {
+            Toast.makeText(context, "Sin conexion a internet", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
-
-    @Override
-    public void run() {
-
-    }
-
-    private void register(Object user) {
-
-    }
-
-    private void login(Object user) {
-
-    }
-
-    private void refreshToken(Object user) {
-
-    }
-
-    //private void
 }

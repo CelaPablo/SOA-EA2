@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Conexion connection = new Conexion();
                 Editable email = inputEmail.getText();
                 Editable password = inputPassword.getText();
                 Editable dni = inputDNI.getText();
@@ -60,11 +61,12 @@ public class RegisterActivity extends AppCompatActivity {
                 Editable lastName = inputLastName.getText();
                 Editable comision = inputComision.getText();
 
-                spinner.setVisibility(View.VISIBLE);
-
                 String msg = name + " " + lastName + " " + password + " " + dni + " " + email + " " + password + " " + comision;
 
-                Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
+                if(connection.checkConnection(RegisterActivity.this)) {
+                    spinner.setVisibility(View.VISIBLE);
+                    Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

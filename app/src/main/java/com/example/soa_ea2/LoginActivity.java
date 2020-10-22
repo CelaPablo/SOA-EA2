@@ -40,14 +40,16 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Conexion connection = new Conexion();
                 Editable email = inputEmail.getText();
                 Editable password = inputPassword.getText();
 
                 String pas = password + " " + BuildConfig.APPLICATION_ID;
 
-                spinner.setVisibility(View.VISIBLE);
-
-                Toast.makeText(LoginActivity.this, email + " " + pas, Toast.LENGTH_SHORT).show();
+                if(connection.checkConnection(LoginActivity.this)) {
+                    spinner.setVisibility(View.VISIBLE);
+                    Toast.makeText(LoginActivity.this, email + " " + pas, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
