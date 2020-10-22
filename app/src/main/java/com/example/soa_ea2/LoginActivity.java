@@ -41,14 +41,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Conexion connection = new Conexion();
-                Editable email = inputEmail.getText();
-                Editable password = inputPassword.getText();
+
+                String email = inputEmail.getText() + "";
+                String password = inputPassword.getText() + "";
+
+                User user = new User("", "", "", email, password, "");
 
                 String pas = password + " " + BuildConfig.APPLICATION_ID;
 
-                if(connection.checkConnection(LoginActivity.this)) {
+                if(connection.checkConnection(LoginActivity.this) && user.checkForLogin(LoginActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginActivity.this, email + " " + pas, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "hola mundo login", Toast.LENGTH_SHORT).show();
                 }
             }
         });

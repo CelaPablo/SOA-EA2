@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -54,18 +53,19 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Conexion connection = new Conexion();
-                Editable email = inputEmail.getText();
-                Editable password = inputPassword.getText();
-                Editable dni = inputDNI.getText();
-                Editable name = inputName.getText();
-                Editable lastName = inputLastName.getText();
-                Editable comision = inputComision.getText();
 
-                String msg = name + " " + lastName + " " + password + " " + dni + " " + email + " " + password + " " + comision;
+                String email = inputEmail.getText() + "";
+                String password = inputPassword.getText() + "";
+                String dni = inputDNI.getText() + "";
+                String name = inputName.getText() + "";
+                String lastName = inputLastName.getText() + "";
+                String comision = inputComision.getText() + "";
 
-                if(connection.checkConnection(RegisterActivity.this)) {
+                User user = new User(name, lastName, dni, email, password, comision);
+
+                if(connection.checkConnection(RegisterActivity.this) && user.checkFroRegister(RegisterActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);
-                    Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "msg", Toast.LENGTH_SHORT).show();
                 }
             }
         });
