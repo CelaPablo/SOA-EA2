@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(connection.checkConnection(LoginActivity.this) && user.checkForLogin(LoginActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginActivity.this, "hola mundo login", Toast.LENGTH_SHORT).show();
+                    loginRequest();
                 }
             }
         });
@@ -65,6 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void loginRequest() {
+
+    }
+
     @Override
     public void onBackPressed() { }
+
+
 }

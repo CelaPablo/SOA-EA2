@@ -18,4 +18,6 @@
     <string name="txt_dni">DNI</string>
     <string name="txt_comision">Comisión</string>
     <string name="txt_battery">Battery</string>
+    <string name="txt_scores">Puntajes</string>
+    <string name="txt_new_game">Nuevo Juego</string>
 </resources>

@@ -5,4 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".MainActivity"/>
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_scores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#2196F3"
+        android:text="@string/txt_scores"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_new_game" />
+
+    <Button
+        android:id="@+id/btn_new_game"
+        android:layout_width="123dp"
+        android:layout_height="47dp"
+        android:background="#673AB7"
+        android:text="@string/txt_new_game"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btn_scores"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
