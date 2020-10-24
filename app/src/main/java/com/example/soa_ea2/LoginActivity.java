@@ -20,8 +20,6 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static Activity login;
-
     private Intent intent;
     private ProgressBar spinner;
     private Button btnLogin, btnRegister;
@@ -34,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        login = this;
 
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_register);
@@ -77,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -120,8 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                 user.setToken(data.getString("token"));
                 user.setTokenRefresh(data.getString("token_refresh"));
 
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                Intent i = new Intent(context, MainActivity.class);
                 startActivity(i);
+                finish();
 
             } catch (JSONException e){
                 e.printStackTrace();

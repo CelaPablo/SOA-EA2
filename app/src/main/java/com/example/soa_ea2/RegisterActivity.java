@@ -20,10 +20,6 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
-    public static Activity register;
-    public static boolean active = false;
-
     private Intent intent;
     private ProgressBar spinner;
     private Button btnLogin, btnRegister;
@@ -37,7 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        register = this;
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_register);
 
@@ -58,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -91,18 +87,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        active = true;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        active = false;
-    }
 
     private void configurarBroadcastReciever() {
         filter = new IntentFilter(Constantes.RESPONSE_REGISTER);
@@ -144,8 +128,9 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setToken(data.getString("token"));
                 user.setTokenRefresh(data.getString("token_refresh"));
 
-                Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                Intent i = new Intent(context, MainActivity.class);
                 startActivity(i);
+                finish();
 
             } catch (JSONException e){
                 e.printStackTrace();
