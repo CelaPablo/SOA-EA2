@@ -16,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LoginActivity.login.finish();
+        if(RegisterActivity.active)
+            RegisterActivity.register.finish();
+
         newGame = findViewById(R.id.btn_new_game);
         scores = findViewById(R.id.btn_scores);
 

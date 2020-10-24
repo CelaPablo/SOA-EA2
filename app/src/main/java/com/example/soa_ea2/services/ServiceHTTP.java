@@ -3,10 +3,14 @@ package com.example.soa_ea2.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.soa_ea2.Constantes;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -65,16 +69,18 @@ public class ServiceHTTP extends IntentService {
 
             int responseCode = urlConnection.getResponseCode();
 
-            if((responseCode == HttpURLConnection.HTTP_OK) || (responseCode == HttpURLConnection.HTTP_CREATED))
-            {
+            if((responseCode == HttpURLConnection.HTTP_OK) || (responseCode == HttpURLConnection.HTTP_CREATED)) {
                 InputStreamReader inputStream = new InputStreamReader(urlConnection.getInputStream());
                 result = convertInputStreamToString(inputStream).toString();
-
             } else if(responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
                 InputStreamReader inputStream = new InputStreamReader(urlConnection.getErrorStream());
                 result = convertInputStreamToString(inputStream).toString();
+                JSONObject resultObject = new JSONObject(result);
+
+                Toast.makeText(getApplicationContext(), resultObject.getString("msg"), Toast.LENGTH_LONG).show();
             } else {
                 result = Constantes.REQUEST_ERROR;
+                Toast.makeText(getApplicationContext(), "BAD REQUEST", Toast.LENGTH_LONG).show();
             }
 
             wr.close();
@@ -85,6 +91,8 @@ public class ServiceHTTP extends IntentService {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return result;

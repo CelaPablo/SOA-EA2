@@ -2,6 +2,7 @@ package com.example.soa_ea2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.soa_ea2.services.ServiceHTTP;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,10 +20,15 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
+
+    public static Activity register;
+    public static boolean active = false;
+
     private Intent intent;
     private ProgressBar spinner;
     private Button btnLogin, btnRegister;
     private TextInputEditText inputEmail, inputPassword, inputDNI, inputName, inputLastName, inputComision;
+
     public IntentFilter filter;
     private ReceptorOperacion receiver = new ReceptorOperacion();
 
@@ -32,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        register = this;
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_register);
 
@@ -86,6 +92,18 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() { }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
     private void configurarBroadcastReciever() {
         filter = new IntentFilter(Constantes.RESPONSE_REGISTER);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
@@ -122,9 +140,12 @@ public class RegisterActivity extends AppCompatActivity {
                 String dataJsonString = intent.getStringExtra("dataJson");
                 JSONObject data = new JSONObject(dataJsonString);
 
-                //User user = User.getInstance();
+                User user = User.getInstance();
+                user.setToken(data.getString("token"));
+                user.setTokenRefresh(data.getString("token_refresh"));
 
-                Toast.makeText(getApplicationContext(), dataJsonString, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(i);
 
             } catch (JSONException e){
                 e.printStackTrace();
