@@ -5,11 +5,9 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,9 +43,9 @@ public class LoginActivity extends AppCompatActivity {
                 String email = inputEmail.getText() + "";
                 String password = inputPassword.getText() + "";
 
-                User user = new User("", "", "", email, password, "");
-
-                String pas = password + " " + BuildConfig.APPLICATION_ID;
+                User user = User.getInstance();
+                user.setEmail(email);
+                user.setPassword(password);
 
                 if(connection.checkConnection(LoginActivity.this) && user.checkForLogin(LoginActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);

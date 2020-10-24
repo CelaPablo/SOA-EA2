@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button newGame, scores;
+    private TextView token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         newGame = findViewById(R.id.btn_new_game);
         scores = findViewById(R.id.btn_scores);
 
+        token = findViewById(R.id.superid);
+
+        User user = User.getInstance();
+
+        token.setText(user.getToken());
     }
 
     @Override

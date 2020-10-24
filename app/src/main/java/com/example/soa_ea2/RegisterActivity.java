@@ -2,14 +2,21 @@ package com.example.soa_ea2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.soa_ea2.services.ServiceHTTP;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -17,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressBar spinner;
     private Button btnLogin, btnRegister;
     private TextInputEditText inputEmail, inputPassword, inputDNI, inputName, inputLastName, inputComision;
+    public IntentFilter filter;
+    private ReceptorOperacion receiver = new ReceptorOperacion();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
         inputLastName = findViewById(R.id.input_lastname);
         inputPassword = findViewById(R.id.input_password);
         inputComision = findViewById(R.id.input_comision);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        configurarBroadcastReciever();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,11 +67,17 @@ public class RegisterActivity extends AppCompatActivity {
                 String lastName = inputLastName.getText() + "";
                 String comision = inputComision.getText() + "";
 
-                User user = new User(name, lastName, dni, email, password, comision);
+                User user = User.getInstance();
+                user.setName(name);
+                user.setLastname(lastName);
+                user.setDni(dni);
+                user.setEmail(email);
+                user.setPassword(password);
+                user.setComision(comision);
 
                 if(connection.checkConnection(RegisterActivity.this) && user.checkFroRegister(RegisterActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);
-                    Toast.makeText(RegisterActivity.this, "msg", Toast.LENGTH_SHORT).show();
+                    registerRequest(user);
                 }
             }
         });
@@ -73,4 +85,50 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { }
+
+    private void configurarBroadcastReciever() {
+        filter = new IntentFilter(Constantes.RESPONSE_REGISTER);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(receiver, filter);
+    }
+
+    private void registerRequest(final User user) {
+        JSONObject object = new JSONObject();
+
+        try {
+            object.put("email", user.getEmail());
+            object.put("password", user.getPassword());
+            object.put("dni", Integer.parseInt(user.getDni()));
+            object.put("name", user.getName());
+            object.put("lastname", user.getLastname());
+            object.put("commission", Integer.parseInt(user.getComision()));
+            object.put("env", Constantes.ENV);
+
+            Intent intent = new Intent(RegisterActivity.this, ServiceHTTP.class);
+            intent.putExtra("dataJson", object.toString());
+            intent.putExtra("uri", Constantes.URL_REGISTER);
+            intent.putExtra("operation", Constantes.RESPONSE_REGISTER);
+
+            startService(intent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public class ReceptorOperacion extends BroadcastReceiver {
+        public void onReceive (Context context, Intent intent){
+            try{
+                String dataJsonString = intent.getStringExtra("dataJson");
+                JSONObject data = new JSONObject(dataJsonString);
+
+                //User user = User.getInstance();
+
+                Toast.makeText(getApplicationContext(), dataJsonString, Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+    }
 }
