@@ -14,30 +14,23 @@ import java.util.ArrayList;
 
 public class EventActivity extends AppCompatActivity {
 
-    private Button back;
-    private ListView listView;
-
-    private int index, indice = 0;
-
-    private String shared;
-    private SharedPreferences preferences;
-
-    private ArrayList<String> lista = new ArrayList<String>();
+    private ArrayList<String> lista = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        back = findViewById(R.id.btn_back);
-        listView = findViewById(R.id.event_list);
+        Button back = findViewById(R.id.btn_back);
+        ListView listView = findViewById(R.id.event_list);
 
         Intent intent = getIntent();
-        shared = intent.getStringExtra("shared");
-        preferences = getSharedPreferences(shared, MODE_PRIVATE);
-        index = preferences.getInt(Constantes.INDEX, 0);
+        String shared = intent.getStringExtra("shared");
+        SharedPreferences preferences = getSharedPreferences(shared, MODE_PRIVATE);
+        int index = preferences.getInt(Constantes.INDEX, 0);
 
-        for(indice=0; indice<=index; indice++){
+        int indice = 0;
+        for(indice =0; indice <= index; indice++){
             String str = preferences.getString(indice + "", "");
             lista.add(str);
         }

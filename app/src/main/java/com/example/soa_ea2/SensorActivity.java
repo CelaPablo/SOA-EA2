@@ -28,6 +28,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     private SharedPreferences preferences;
 
+    private long timeNow, timeOld;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         back = findViewById(R.id.btn_back);
         eventos = findViewById(R.id.btn_event);
 
+        timeOld = System.currentTimeMillis();
+
+        changeTitleAndImage(sensorType);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +74,27 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 startActivity(i);
             }
         });
+    }
+
+    private void changeTitleAndImage(int sensorType) {
+        switch (sensorType) {
+            case Sensor.TYPE_LIGHT:
+                image.setBackgroundResource(R.drawable.luz);
+                title.setText("SENSOR DE LUZ");
+                break;
+            case Sensor.TYPE_GYROSCOPE:
+                image.setBackgroundResource(R.drawable.giroscopo);
+                title.setText("GIROSCOPO");
+                break;
+            case Sensor.TYPE_PROXIMITY:
+                image.setBackgroundResource(R.drawable.proximidad);
+                title.setText("PROXIMIDAD");
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                image.setBackgroundResource(R.drawable.acelerometro);
+                title.setText("ACELEROMETRO");
+                break;
+        }
     }
 
     @Override
@@ -96,42 +123,46 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     @SuppressLint("SetTextI18n")
     private void sensorAcelerometro(float value, float value1, float value2) {
-        image.setBackgroundResource(R.drawable.acelerometro);
-        title.setText("ACELEROMETRO");
+        timeNow = System.currentTimeMillis();
         valor1.setText("X: " + value);
         valor2.setText("Y: " + value1);
         valor3.setText("Z: " + value2);
-        saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
-        timeout();
+        if(timeNow - timeOld > Constantes.MILLIS) {
+            timeOld = System.currentTimeMillis();
+            saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void sensorProximidad(float value) {
-        image.setBackgroundResource(R.drawable.proximidad);
-        title.setText("PROXIMIDAD");
+        timeNow = System.currentTimeMillis();
         valor1.setText("X: " + value);
-        saveInSharedPreferences("X: " + value);
-        timeout();
+        if(timeNow - timeOld > Constantes.MILLIS) {
+            timeOld = System.currentTimeMillis();
+            saveInSharedPreferences("X: " + value);
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void sensorGiroscopo(float value, float value1, float value2) {
-        image.setBackgroundResource(R.drawable.giroscopo);
-        title.setText("GIROSCOPO");
+        timeNow = System.currentTimeMillis();
         valor1.setText("X: " + value);
         valor2.setText("Y: " + value1);
         valor3.setText("Z: " + value2);
-        saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
-        timeout();
+        if(timeNow - timeOld > Constantes.MILLIS) {
+            timeOld = System.currentTimeMillis();
+            saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private void sensorLuz(float value) {
-        image.setBackgroundResource(R.drawable.luz);
-        title.setText("SENSOR DE LUZ");
+        timeNow = System.currentTimeMillis();
         valor1.setText("X: " + value);
-        saveInSharedPreferences("X: " + value);
-        timeout();
+        if(timeNow - timeOld > Constantes.MILLIS) {
+            timeOld = System.currentTimeMillis();
+            saveInSharedPreferences("X: " + value);
+        }
     }
 
     @Override
@@ -167,13 +198,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_GAME);
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_GAME);
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
-    }
-
-    private void timeout() {
-        new CountDownTimer(1000, 1000) {
-            public void onTick(long millisUntilFinished) { }
-            public void onFinish() {}
-        }.start();
     }
 
     private void saveInSharedPreferences(String newSharedData) {

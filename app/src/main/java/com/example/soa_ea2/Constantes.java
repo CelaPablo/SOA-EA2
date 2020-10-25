@@ -19,6 +19,7 @@ public class Constantes {
 
     public final static String TYPE_EVENT = "Uso de sensor";
 
+    public final static long MILLIS = 1000;
     public final static String INDEX = "index";
     public final static String SHARED_ACELEROMETRO = "SHARED_ACELEROMETRO";
     public final static String SHARED_GIROSCOPO = "SHARED_GIROSCOPO";
