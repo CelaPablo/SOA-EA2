@@ -1,7 +1,6 @@
 package com.example.soa_ea2;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
+qgitqqqqimport android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -80,6 +79,18 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        configurarBroadcastReciever();
+    }
 
     private void configurarBroadcastReciever() {
         filter = new IntentFilter(Constantes.RESPONSE_LOGIN);

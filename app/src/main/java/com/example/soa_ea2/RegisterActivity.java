@@ -2,7 +2,6 @@ package com.example.soa_ea2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -87,6 +86,18 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        configurarBroadcastReciever();
+    }
 
     private void configurarBroadcastReciever() {
         filter = new IntentFilter(Constantes.RESPONSE_REGISTER);
