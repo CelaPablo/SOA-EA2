@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.soa_ea2.services.ServiceHTTP;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

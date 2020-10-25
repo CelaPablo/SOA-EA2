@@ -16,40 +16,52 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity android:name=".EventActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SensorActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        android:name=".SensorActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        android:name=".MainActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        android:name=".RegisterActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        android:name=".LoginActivity"
+        android:label="@string/title_activity_login"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Battery"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+        android:name=".Battery"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher_foreground" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
 
         <service
             android:name=".services.ServiceHTTP"
             android:enabled="true"
             tools:ignore="Instantiatable" />
+        <service
+            android:name=".firebase.FirebaseService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
