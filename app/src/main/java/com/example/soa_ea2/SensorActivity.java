@@ -51,6 +51,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         });
     }
 
+    @Override
+    public void onBackPressed() { }
+
     @SuppressLint("NewApi")
     @Override
     public void onSensorChanged(SensorEvent event) {

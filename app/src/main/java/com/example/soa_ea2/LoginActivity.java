@@ -110,6 +110,8 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("dataJson", object.toString());
             intent.putExtra("uri", Constantes.URL_LOGIN);
             intent.putExtra("operation", Constantes.RESPONSE_LOGIN);
+            intent.putExtra("typeRequest", Constantes.METODO_POST);
+            intent.putExtra("token", "");
 
             startService(intent);
         } catch (JSONException e) {

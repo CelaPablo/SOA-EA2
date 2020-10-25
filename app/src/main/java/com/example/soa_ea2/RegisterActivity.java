@@ -121,6 +121,8 @@ public class RegisterActivity extends AppCompatActivity {
             intent.putExtra("dataJson", object.toString());
             intent.putExtra("uri", Constantes.URL_REGISTER);
             intent.putExtra("operation", Constantes.RESPONSE_REGISTER);
+            intent.putExtra("typeRequest", Constantes.METODO_POST);
+            intent.putExtra("token", "");
 
             startService(intent);
         } catch (JSONException e) {
