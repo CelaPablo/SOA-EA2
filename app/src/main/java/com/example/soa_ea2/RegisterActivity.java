@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.example.soa_ea2.services.RefreshToken;
 import com.example.soa_ea2.services.ServiceHTTP;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -21,7 +22,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Intent intent;
     private ProgressBar spinner;
-    private Button btnLogin, btnRegister;
     private TextInputEditText inputEmail, inputPassword, inputDNI, inputName, inputLastName, inputComision;
 
     public IntentFilter filter;
@@ -32,8 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        btnLogin = findViewById(R.id.btn_login);
-        btnRegister = findViewById(R.id.btn_register);
+        Button btnLogin = findViewById(R.id.btn_login);
+        Button btnRegister = findViewById(R.id.btn_register);
 
         spinner = findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
@@ -142,6 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setTokenRefresh(data.getString("token_refresh"));
 
                 Intent i = new Intent(context, MainActivity.class);
+                new RefreshToken().start();
                 startActivity(i);
                 finish();
 

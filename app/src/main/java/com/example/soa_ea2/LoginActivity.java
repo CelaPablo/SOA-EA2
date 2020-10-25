@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import com.example.soa_ea2.services.RefreshToken;
 import com.example.soa_ea2.services.ServiceHTTP;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
@@ -131,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 user.setTokenRefresh(data.getString("token_refresh"));
 
                 Intent i = new Intent(context, MainActivity.class);
+                new RefreshToken().start();
                 startActivity(i);
                 finish();
 

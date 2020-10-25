@@ -1,13 +1,8 @@
 package com.example.soa_ea2.services;
 
-import android.app.IntentService;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-
 import com.example.soa_ea2.Constantes;
+import com.example.soa_ea2.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,58 +16,51 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-public class ServiceHTTP extends IntentService {
+public class RefreshToken extends Thread  {
 
-    public ServiceHTTP() { super("Service POST"); }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public void run() {
         try {
-            String uri = intent.getExtras().getString("uri");
-            String dataJson = intent.getExtras().getString(("dataJson"));
-            String operation = intent.getExtras().getString(("operation"));
-            String typeRequest = intent.getExtras().getString(("typeRequest"));
-            String token = intent.getExtras().getString(("token"));
-            ejecutarPost(uri, dataJson, operation, typeRequest, token);
-        } catch (Exception e) {
+            Thread.sleep(Constantes.MILLIS_TO_SLEEP);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String response = ejecutarRefresh();
+
+        try {
+            JSONObject jsonResponse = new JSONObject(response);
+            String success = jsonResponse.getString("success");
+            if(success.equals("true")) {
+                User user = User.getInstance();
+                user.setToken(jsonResponse.getString("token"));
+                user.setTokenRefresh(jsonResponse.getString("token_refresh"));
+                new RefreshToken().start();
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    protected void ejecutarPost(String uri, String datosJson, String operation, String typeRequest, String token){
-        String result = POST(uri,datosJson, typeRequest, token);
-
-        if(result == null || result.equals(Constantes.REQUEST_ERROR)) return;
-
-        Intent i = new Intent(operation);
-        i.putExtra("dataJson",result);
-        sendBroadcast(i);
-    }
-
-    private String POST(String uri, String dataJson, String typeRequest, String token) {
+    private String ejecutarRefresh() {
         HttpURLConnection urlConnection;
-        String result = null;
+        User user = User.getInstance();
+        String result = "";
 
         try {
-            URL mUrl = new URL(uri);
+            URL mUrl = new URL(Constantes.URL_TOKEN);
 
             urlConnection = (HttpURLConnection) mUrl.openConnection();
-
-            if(token.length() > 0) {
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setRequestProperty("Authorization", "Bearer " + token);
-            } else {
-                urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            }
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Bearer " + user.getTokenRefresh());
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
             urlConnection.setConnectTimeout(5000);
-            urlConnection.setRequestMethod(typeRequest);
+            urlConnection.setRequestMethod(Constantes.METODO_PUT);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            wr.write(dataJson.getBytes("UTF-8"));
-
+            wr.write(result.getBytes("UTF-8"));
             wr.flush();
+
             urlConnection.connect();
 
             int responseCode = urlConnection.getResponseCode();
@@ -83,8 +71,6 @@ public class ServiceHTTP extends IntentService {
             } else if(responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
                 InputStreamReader inputStream = new InputStreamReader(urlConnection.getErrorStream());
                 result = convertInputStreamToString(inputStream).toString();
-                JSONObject resultObject = new JSONObject(result);
-                Toast.makeText(getApplicationContext(), resultObject.getString("msg"), Toast.LENGTH_LONG).show();
             } else {
                 result = Constantes.REQUEST_ERROR;
             }
@@ -93,16 +79,15 @@ public class ServiceHTTP extends IntentService {
 
             wr.close();
             urlConnection.disconnect();
-            
+
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
         return result;
     }
 
