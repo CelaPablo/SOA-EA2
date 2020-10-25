@@ -18,4 +18,10 @@ public class Constantes {
     public final static String RESPONSE_REGISTER = "com.example.soa_ea2.action.RESPUESTA_REGISTER";
 
     public final static String TYPE_EVENT = "Uso de sensor";
+
+    public final static String INDEX = "index";
+    public final static String SHARED_ACELEROMETRO = "SHARED_ACELEROMETRO";
+    public final static String SHARED_GIROSCOPO = "SHARED_GIROSCOPO";
+    public final static String SHARED_PROXIMIDAD = "SHARED_PROXIMIDAD";
+    public final static String SHARED_LUZ = "SHARED_LUZ";
 }

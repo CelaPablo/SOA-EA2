@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,11 +18,15 @@ import android.widget.TextView;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener {
 
-    private Button back;
-    private int sensorType;
+    private String shared;
+    private int sensorType, index;
+
     private ImageView image;
+    private Button back, eventos;
     private SensorManager manager;
     private TextView title,valor1, valor2, valor3;
+
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,11 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         setContentView(R.layout.activity_sensor);
 
         Intent intent = getIntent();
+        shared = intent.getStringExtra("shared");
         sensorType = intent.getIntExtra("type", 1);
+
+        preferences = getSharedPreferences(shared, MODE_PRIVATE);
+        index = preferences.getInt(Constantes.INDEX, 0);
 
         manager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -40,6 +49,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         image = findViewById(R.id.image);
         back = findViewById(R.id.btn_back);
+        eventos = findViewById(R.id.btn_event);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +57,15 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 Intent i = new Intent(SensorActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();
+            }
+        });
+
+        eventos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SensorActivity.this, EventActivity.class);
+                i.putExtra("shared", shared);
+                startActivity(i);
             }
         });
     }
@@ -79,9 +98,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorAcelerometro(float value, float value1, float value2) {
         image.setBackgroundResource(R.drawable.acelerometro);
         title.setText("ACELEROMETRO");
-        valor1.setText("X :" + value);
-        valor2.setText("Y :" + value1);
-        valor3.setText("Z :" + value2);
+        valor1.setText("X: " + value);
+        valor2.setText("Y: " + value1);
+        valor3.setText("Z: " + value2);
+        saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
         timeout();
     }
 
@@ -89,7 +109,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorProximidad(float value) {
         image.setBackgroundResource(R.drawable.proximidad);
         title.setText("PROXIMIDAD");
-        valor1.setText("X :" + value);
+        valor1.setText("X: " + value);
+        saveInSharedPreferences("X: " + value);
         timeout();
     }
 
@@ -97,9 +118,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorGiroscopo(float value, float value1, float value2) {
         image.setBackgroundResource(R.drawable.giroscopo);
         title.setText("GIROSCOPO");
-        valor1.setText("X :" + value);
-        valor2.setText("Y :" + value1);
-        valor3.setText("Z :" + value2);
+        valor1.setText("X: " + value);
+        valor2.setText("Y: " + value1);
+        valor3.setText("Z: " + value2);
+        saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
         timeout();
     }
 
@@ -107,7 +129,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorLuz(float value) {
         image.setBackgroundResource(R.drawable.luz);
         title.setText("SENSOR DE LUZ");
-        valor1.setText("X :" + value);
+        valor1.setText("X: " + value);
+        saveInSharedPreferences("X: " + value);
         timeout();
     }
 
@@ -147,9 +170,16 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
     private void timeout() {
-        new CountDownTimer(500, 1000) {
+        new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) { }
             public void onFinish() {}
         }.start();
+    }
+
+    private void saveInSharedPreferences(String newSharedData) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(String.valueOf(index++), newSharedData);
+        editor.putInt(Constantes.INDEX, index);
+        editor.apply();
     }
 }

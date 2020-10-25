@@ -31,4 +31,5 @@
     <string name="txt_valor2"> </string>
     <string name="txt_valor3"> </string>
     <string name="txt_atras">ATRAS</string>
+    <string name="txt_eventos_del_sensor">EVENTOS DEL SENSOR</string>
 </resources>

@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         Button proximidad = findViewById(R.id.btn_proximidad);
         Button acelerometro = findViewById(R.id.btn_acelerometro);
 
-        Button eventos = findViewById(R.id.btn_eventos);
-
         configurarBroadcastReciever();
 
         luz.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 eventRequest("Sensor de Luz activado");
                 intent = new Intent(MainActivity.this, SensorActivity.class);
                 intent.putExtra("type", Sensor.TYPE_LIGHT);
+                intent.putExtra("shared", Constantes.SHARED_LUZ);
                 startActivity(intent);
                 finish();
             }
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 eventRequest("Sensor Giroscopo activado");
                 intent = new Intent(MainActivity.this, SensorActivity.class);
                 intent.putExtra("type", Sensor.TYPE_GYROSCOPE);
+                intent.putExtra("shared", Constantes.SHARED_GIROSCOPO);
                 startActivity(intent);
                 finish();
             }
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 eventRequest("Sensor de Proximidad activado");
                 intent = new Intent(MainActivity.this, SensorActivity.class);
                 intent.putExtra("type", Sensor.TYPE_PROXIMITY);
+                intent.putExtra("shared", Constantes.SHARED_PROXIMIDAD);
                 startActivity(intent);
                 finish();
             }
@@ -76,15 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 eventRequest("Sensor Acelerometro activado");
                 intent = new Intent(MainActivity.this, SensorActivity.class);
                 intent.putExtra("type", Sensor.TYPE_ACCELEROMETER);
+                intent.putExtra("shared", Constantes.SHARED_ACELEROMETRO);
                 startActivity(intent);
                 finish();
-            }
-        });
-
-        eventos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }
