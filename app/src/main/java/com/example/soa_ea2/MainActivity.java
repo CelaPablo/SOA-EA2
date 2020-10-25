@@ -137,15 +137,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class ReceptorOperacion extends BroadcastReceiver {
+    public static class ReceptorOperacion extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
-            try{
-                String dataJsonString = intent.getStringExtra("dataJson");
-                JSONObject data = new JSONObject(dataJsonString);
-                Log.i("RESPONSE EVENT", data.toString());
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
+            String dataJsonString = intent.getStringExtra("dataJson");
+            assert dataJsonString != null;
+            Log.i("RESPONSE EVENT", dataJsonString);
         }
     }
 }
