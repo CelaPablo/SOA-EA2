@@ -9,40 +9,67 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btn_scores"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_giroscopo"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:background="#2196F3"
-        android:text="@string/txt_scores"
+        android:text="@string/txt_giroscopo"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_proximidad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_new_game" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_acelerometro" />
 
     <Button
-        android:id="@+id/btn_new_game"
-        android:layout_width="123dp"
-        android:layout_height="47dp"
+        android:id="@+id/btn_acelerometro"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:background="#673AB7"
-        android:text="@string/txt_new_game"
+        android:text="@string/txt_acelerometro"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/btn_scores"
+        app:layout_constraintBottom_toTopOf="@+id/btn_giroscopo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/superid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="TextView"
+    <Button
+        android:id="@+id/btn_proximidad"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="#4CAF50"
+        android:text="@string/txt_proximidad"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btn_luz"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_scores" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_giroscopo" />
+
+    <Button
+        android:id="@+id/btn_luz"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="#FF5722"
+        android:text="@string/txt_luz"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btn_eventos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_proximidad" />
+
+    <Button
+        android:id="@+id/btn_eventos"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="#FFC107"
+        android:text="@string/txt_eventos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_luz" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

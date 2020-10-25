@@ -1,6 +1,6 @@
 package com.example.soa_ea2;
 
-qgitqqqqimport android.content.BroadcastReceiver;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;

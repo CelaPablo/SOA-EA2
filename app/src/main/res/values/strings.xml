@@ -20,4 +20,15 @@
     <string name="txt_battery">Battery</string>
     <string name="txt_scores">Puntajes</string>
     <string name="txt_new_game">Nuevo Juego</string>
+    <string name="txt_giroscopo">GIROSCOPO</string>
+    <string name="txt_acelerometro">ACELEROMETRO</string>
+    <string name="txt_proximidad">PROXIMIDAD</string>
+    <string name="txt_presion">PRESION</string>
+    <string name="txt_eventos">EVENTOS</string>
+    <string name="txt_luz">Luz</string>
+    <string name="txt_title">Title</string>
+    <string name="txt_valor1"> </string>
+    <string name="txt_valor2"> </string>
+    <string name="txt_valor3"> </string>
+    <string name="txt_atras">ATRAS</string>
 </resources>
