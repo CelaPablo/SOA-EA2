@@ -92,7 +92,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/custom_button_blue"
-        android:text="@string/txt_eventos"
+        android:text="@string/txt_mediciones"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
