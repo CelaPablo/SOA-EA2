@@ -10,10 +10,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -101,19 +104,28 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @SuppressLint("NewApi")
     @Override
     public void onSensorChanged(SensorEvent event) {
+        Log.i("######", Arrays.toString(event.values));
         synchronized (this) {
             switch (sensorType){
                 case Sensor.TYPE_LIGHT:
                     sensorLuz(event.values[0]);
                     break;
                 case Sensor.TYPE_GYROSCOPE:
-                    sensorGiroscopo(event.values[0], event.values[1], event.values[2]);
+                    if(event.values.length == 3) {
+                        sensorGiroscopo(event.values[0], event.values[1] , event.values[2]);
+                    } else {
+                        sensorGiroscopo(event.values[0], event.values[0] , event.values[0]);
+                    }
                     break;
                 case Sensor.TYPE_PROXIMITY:
                     sensorProximidad(event.values[0]);
                     break;
                 case Sensor.TYPE_ACCELEROMETER:
-                    sensorAcelerometro(event.values[0], event.values[1], event.values[2]);
+                    if(event.values.length == 3) {
+                        sensorAcelerometro(event.values[0], event.values[1], event.values[2]);
+                    } else {
+                        sensorAcelerometro(event.values[0], event.values[0], event.values[0]);
+                    }
                     break;
             }
         }
@@ -135,7 +147,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorProximidad(float value) {
         timeNow = System.currentTimeMillis();
         valor1.setText("X: " + value);
-        if(timeNow - timeOld > Constantes.MILLIS && value > 0) {
+        if(timeNow - timeOld > Constantes.MILLIS && value != 0) {
             timeOld = System.currentTimeMillis();
             saveInSharedPreferences("X: " + value);
         }
@@ -157,7 +169,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorLuz(float value) {
         timeNow = System.currentTimeMillis();
         valor1.setText("X: " + value);
-        if(timeNow - timeOld > Constantes.MILLIS && value > 0) {
+        if(timeNow - timeOld > Constantes.MILLIS && value != 0) {
             timeOld = System.currentTimeMillis();
             saveInSharedPreferences("X: " + value);
         }
@@ -170,12 +182,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     protected void onPause() {
         super.onPause();
         stopSensors();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        startSensors();
     }
 
     @Override
@@ -192,10 +198,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
     private void startSensors() {
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_GAME);
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_GAME);
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_GAME);
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
+        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
+        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
+        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private void saveInSharedPreferences(String newSharedData) {
