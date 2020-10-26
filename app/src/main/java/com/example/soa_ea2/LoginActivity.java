@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btn_register);
 
         spinner = findViewById(R.id.progressBar2);
-        spinner.setVisibility(View.GONE);
+        //spinner.setVisibility(View.GONE);
 
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_password);

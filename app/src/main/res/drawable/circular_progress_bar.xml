@@ -10,7 +10,6 @@
         android:innerRadiusRatio="3"
         android:shape="ring"
         android:thicknessRatio="7.0">
-
         <gradient
             android:angle="0"
             android:type="sweep"
