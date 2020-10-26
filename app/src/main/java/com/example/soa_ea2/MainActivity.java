@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Intent intent;
     public IntentFilter filter;
-    private ReceptorOperacion receiver = new ReceptorOperacion();
+    private CallbackEvent receiver = new CallbackEvent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,15 +117,15 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 object.put("env", Constantes.ENV);
-                object.put("type_events", Constantes.TYPE_EVENT);
                 object.put("description", description);
+                object.put("type_events", Constantes.TYPE_EVENT);
 
                 Intent intent = new Intent(MainActivity.this, ServiceHTTP.class);
-                intent.putExtra("dataJson", object.toString());
-                intent.putExtra("uri", Constantes.URL_EVENTS);
-                intent.putExtra("operation", Constantes.RESPONSE_EVENT);
-                intent.putExtra("typeRequest", Constantes.METODO_POST);
                 intent.putExtra("token", token);
+                intent.putExtra("uri", Constantes.URL_EVENTS);
+                intent.putExtra("dataJson", object.toString());
+                intent.putExtra("typeRequest", Constantes.METODO_POST);
+                intent.putExtra("operation", Constantes.RESPONSE_EVENT);
 
                 startService(intent);
             } catch (JSONException e) {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static class ReceptorOperacion extends BroadcastReceiver {
+    public static class CallbackEvent extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             String dataJsonString = intent.getStringExtra("dataJson");
             assert dataJsonString != null;

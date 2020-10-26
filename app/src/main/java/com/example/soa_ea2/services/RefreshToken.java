@@ -50,15 +50,15 @@ public class RefreshToken extends Thread  {
             URL mUrl = new URL(Constantes.URL_TOKEN);
 
             urlConnection = (HttpURLConnection) mUrl.openConnection();
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Authorization", "Bearer " + user.getTokenRefresh());
-            urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
             urlConnection.setConnectTimeout(5000);
             urlConnection.setRequestMethod(Constantes.METODO_PUT);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Authorization", "Bearer " + user.getTokenRefresh());
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            wr.write(result.getBytes("UTF-8"));
+            wr.write(result.getBytes(Constantes.UTF));
             wr.flush();
 
             urlConnection.connect();
@@ -79,7 +79,6 @@ public class RefreshToken extends Thread  {
 
             wr.close();
             urlConnection.disconnect();
-
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -87,7 +86,6 @@ public class RefreshToken extends Thread  {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 

@@ -28,19 +28,20 @@ public class ServiceHTTP extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
+            assert intent != null;
             String uri = intent.getExtras().getString("uri");
+            String token = intent.getExtras().getString(("token"));
             String dataJson = intent.getExtras().getString(("dataJson"));
             String operation = intent.getExtras().getString(("operation"));
             String typeRequest = intent.getExtras().getString(("typeRequest"));
-            String token = intent.getExtras().getString(("token"));
-            ejecutarPost(uri, dataJson, operation, typeRequest, token);
+            executeRequest(uri, dataJson, operation, typeRequest, token);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected void ejecutarPost(String uri, String datosJson, String operation, String typeRequest, String token){
-        String result = POST(uri,datosJson, typeRequest, token);
+    protected void executeRequest(String uri, String dataJson, String operation, String typeRequest, String token){
+        String result = Request(uri,dataJson, typeRequest, token);
 
         if(result == null || result.equals(Constantes.REQUEST_ERROR)) return;
 
@@ -49,7 +50,7 @@ public class ServiceHTTP extends IntentService {
         sendBroadcast(i);
     }
 
-    private String POST(String uri, String dataJson, String typeRequest, String token) {
+    private String Request(String uri, String dataJson, String typeRequest, String token) {
         HttpURLConnection urlConnection;
         String result = null;
 
@@ -64,13 +65,13 @@ public class ServiceHTTP extends IntentService {
             } else {
                 urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             }
-            urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
             urlConnection.setConnectTimeout(5000);
             urlConnection.setRequestMethod(typeRequest);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            wr.write(dataJson.getBytes("UTF-8"));
+            wr.write(dataJson.getBytes(Constantes.UTF));
 
             wr.flush();
             urlConnection.connect();
@@ -93,7 +94,6 @@ public class ServiceHTTP extends IntentService {
 
             wr.close();
             urlConnection.disconnect();
-            
         } catch (ProtocolException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {
@@ -114,6 +114,7 @@ public class ServiceHTTP extends IntentService {
         while ((line = br.readLine()) != null){
             result.append(line).append("\n");
         }
+
         br.close();
         return result;
     }

@@ -20,12 +20,14 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private User user;
+
     private Intent intent;
     private ProgressBar spinner;
     private TextInputEditText inputEmail, inputPassword, inputDNI, inputName, inputLastName, inputComision;
 
     public IntentFilter filter;
-    private ReceptorOperacion receiver = new ReceptorOperacion();
+    private CallbackRegister receiver = new CallbackRegister();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         configurarBroadcastReciever();
 
+        user = User.getInstance();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,22 +68,15 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Conexion connection = new Conexion();
 
-                String email = inputEmail.getText() + "";
-                String password = inputPassword.getText() + "";
-                String dni = inputDNI.getText() + "";
-                String name = inputName.getText() + "";
-                String lastName = inputLastName.getText() + "";
-                String comision = inputComision.getText() + "";
+                user.setDni(inputDNI.getText() + "");
+                user.setName(inputName.getText() + "");
+                user.setEmail(inputEmail.getText() + "");
+                user.setLastname(inputLastName.getText() + "");
+                user.setPassword(inputPassword.getText() + "");
+                user.setComision(inputComision.getText() + "");
 
-                User user = User.getInstance();
-                user.setName(name);
-                user.setLastname(lastName);
-                user.setDni(dni);
-                user.setEmail(email);
-                user.setPassword(password);
-                user.setComision(comision);
-
-                if(connection.checkConnection(RegisterActivity.this) && user.checkFroRegister(RegisterActivity.this)) {
+                if(connection.checkConnection(RegisterActivity.this) &&
+                        user.checkFroRegister(RegisterActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);
                     registerRequest(user);
                 }
@@ -110,37 +107,35 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerRequest(final User user) {
         JSONObject object = new JSONObject();
-
         try {
+            object.put("env", Constantes.ENV);
+            object.put("name", user.getName());
             object.put("email", user.getEmail());
             object.put("password", user.getPassword());
-            object.put("dni", Integer.parseInt(user.getDni()));
-            object.put("name", user.getName());
             object.put("lastname", user.getLastname());
+            object.put("dni", Integer.parseInt(user.getDni()));
             object.put("commission", Integer.parseInt(user.getComision()));
-            object.put("env", Constantes.ENV);
 
             Intent intent = new Intent(RegisterActivity.this, ServiceHTTP.class);
+            intent.putExtra("token", "");
             intent.putExtra("dataJson", object.toString());
             intent.putExtra("uri", Constantes.URL_REGISTER);
-            intent.putExtra("operation", Constantes.RESPONSE_REGISTER);
             intent.putExtra("typeRequest", Constantes.METODO_POST);
-            intent.putExtra("token", "");
+            intent.putExtra("operation", Constantes.RESPONSE_REGISTER);
 
             startService(intent);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
-    public class ReceptorOperacion extends BroadcastReceiver {
+    public class CallbackRegister extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             try{
                 String dataJsonString = intent.getStringExtra("dataJson");
+                assert dataJsonString != null;
                 JSONObject data = new JSONObject(dataJsonString);
 
-                User user = User.getInstance();
                 user.setToken(data.getString("token"));
                 user.setTokenRefresh(data.getString("token_refresh"));
 
@@ -148,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity {
                 new RefreshToken().start();
                 startActivity(i);
                 finish();
-
             } catch (JSONException e){
                 e.printStackTrace();
             }

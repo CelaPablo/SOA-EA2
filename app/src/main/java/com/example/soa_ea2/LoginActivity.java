@@ -20,13 +20,14 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private User user;
     private Intent intent;
     private ProgressBar spinner;
     private Button btnLogin, btnRegister;
     private TextInputEditText inputEmail, inputPassword;
 
     public IntentFilter filter;
-    private ReceptorOperacion receiver = new ReceptorOperacion();
+    private CallbackLogin receiver = new CallbackLogin();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,14 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btn_register);
 
         spinner = findViewById(R.id.progressBar2);
-        //spinner.setVisibility(View.GONE);
+        spinner.setVisibility(View.GONE);
 
         inputEmail = findViewById(R.id.input_email);
         inputPassword = findViewById(R.id.input_password);
 
         configurarBroadcastReciever();
+
+        user = User.getInstance();
     }
 
     @Override
@@ -57,14 +60,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Conexion connection = new Conexion();
 
-                String email = inputEmail.getText() + "";
-                String password = inputPassword.getText() + "";
+                user.setEmail(inputEmail.getText() + "");
+                user.setPassword(inputPassword.getText() + "");
 
-                User user = User.getInstance();
-                user.setEmail(email);
-                user.setPassword(password);
-
-                if(connection.checkConnection(LoginActivity.this) && user.checkForLogin(LoginActivity.this)) {
+                if(connection.checkConnection(LoginActivity.this) &&
+                        user.checkForLogin(LoginActivity.this)) {
                     spinner.setVisibility(View.VISIBLE);
                     loginRequest(user);
                 }
@@ -106,31 +106,33 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject object = new JSONObject();
 
         try {
+            object.put("env", Constantes.ENV);
             object.put("email", user.getEmail());
             object.put("password", user.getPassword());
-            object.put("env", Constantes.ENV);
 
             Intent intent = new Intent(LoginActivity.this, ServiceHTTP.class);
-            intent.putExtra("dataJson", object.toString());
-            intent.putExtra("uri", Constantes.URL_LOGIN);
-            intent.putExtra("operation", Constantes.RESPONSE_LOGIN);
-            intent.putExtra("typeRequest", Constantes.METODO_POST);
+
             intent.putExtra("token", "");
+            intent.putExtra("uri", Constantes.URL_LOGIN);
+            intent.putExtra("dataJson", object.toString());
+            intent.putExtra("typeRequest", Constantes.METODO_POST);
+            intent.putExtra("operation", Constantes.RESPONSE_LOGIN);
 
             startService(intent);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
-    public class ReceptorOperacion extends BroadcastReceiver {
+    public class CallbackLogin extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             try{
+                spinner.setVisibility(View.GONE);
+
                 String dataJsonString = intent.getStringExtra("dataJson");
+                assert dataJsonString != null;
                 JSONObject data = new JSONObject(dataJsonString);
 
-                User user = User.getInstance();
                 user.setToken(data.getString("token"));
                 user.setTokenRefresh(data.getString("token_refresh"));
 
@@ -138,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                 new RefreshToken().start();
                 startActivity(i);
                 finish();
-
             } catch (JSONException e){
                 e.printStackTrace();
             }

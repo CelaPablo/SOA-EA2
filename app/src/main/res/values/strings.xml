@@ -25,7 +25,7 @@
     <string name="txt_proximidad">PROXIMIDAD</string>
     <string name="txt_presion">PRESION</string>
     <string name="txt_eventos">EVENTOS</string>
-    <string name="txt_luz">Luz</string>
+    <string name="txt_luz">SENSOR DE LUZ</string>
     <string name="txt_title">Title</string>
     <string name="txt_valor1"> </string>
     <string name="txt_valor2"> </string>

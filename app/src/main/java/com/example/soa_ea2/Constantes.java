@@ -4,8 +4,11 @@ public class Constantes {
 
     public final static String ENV = "PROD";
 
+    public final static String UTF = "UTF-8";
     public final static String METODO_PUT = "PUT";
     public final static String METODO_POST = "POST";
+
+    public final static String EMAIL_REGEX = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     public final static String URL_LOGIN = "http://so-unlam.net.ar/api/api/login";
     public final static String URL_EVENTS = "http://so-unlam.net.ar/api/api/event";
@@ -23,10 +26,10 @@ public class Constantes {
     public final static long MILLIS_TO_SLEEP = 1680000;
 
     public final static String INDEX = "index";
-    public final static String SHARED_ACELEROMETRO = "SHARED_ACELEROMETRO";
+    public final static String SHARED_LUZ = "SHARED_LUZ";
     public final static String SHARED_GIROSCOPO = "SHARED_GIROSCOPO";
     public final static String SHARED_PROXIMIDAD = "SHARED_PROXIMIDAD";
-    public final static String SHARED_LUZ = "SHARED_LUZ";
+    public final static String SHARED_ACELEROMETRO = "SHARED_ACELEROMETRO";
 
     public final static String LOG_TYPE = "## REQUEST LOG ##";
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class EventActivity extends AppCompatActivity {
 
-    private ArrayList<String> lista = new ArrayList<>();
+    private ArrayList<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +28,9 @@ public class EventActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.event_list);
 
         Intent intent = getIntent();
-        String shared = intent.getStringExtra("shared");
-        SharedPreferences preferences = getSharedPreferences(shared, MODE_PRIVATE);
-        int index = preferences.getInt(Constantes.INDEX, 0);
+        completeList(intent);
 
-        int indice = 0;
-        for(indice =0; indice <= index; indice++){
-            String str = preferences.getString(indice + "", "");
-            lista.add(str);
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.events_list, lista);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.events_list, list);
         listView.setAdapter(adapter);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +41,18 @@ public class EventActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void completeList(Intent intent) {
+        String shared = intent.getStringExtra("shared");
+        SharedPreferences preferences = getSharedPreferences(shared, MODE_PRIVATE);
+        int index = preferences.getInt(Constantes.INDEX, 0);
+
+        int indice;
+        for(indice = 0; indice <= index; indice++){
+            String str = preferences.getString(indice + "", "");
+            list.add(str);
+        }
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,7 +21,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private int sensorType, index;
 
     private ImageView image;
-    private Button back, eventos;
     private SensorManager manager;
     private TextView title,valor1, valor2, valor3;
 
@@ -53,8 +51,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         valor3 = findViewById(R.id.txtValue3);
 
         image = findViewById(R.id.image);
-        back = findViewById(R.id.btn_back);
-        eventos = findViewById(R.id.btn_event);
+        Button back = findViewById(R.id.btn_back);
+        Button events = findViewById(R.id.btn_event);
 
         timeOld = System.currentTimeMillis();
 
@@ -69,7 +67,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             }
         });
 
-        eventos.setOnClickListener(new View.OnClickListener() {
+        events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(SensorActivity.this, EventActivity.class);
@@ -83,19 +81,19 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         switch (sensorType) {
             case Sensor.TYPE_LIGHT:
                 image.setBackgroundResource(R.drawable.luz);
-                title.setText("SENSOR DE LUZ");
+                title.setText(R.string.txt_luz);
                 break;
             case Sensor.TYPE_GYROSCOPE:
                 image.setBackgroundResource(R.drawable.giroscopo);
-                title.setText("GIROSCOPO");
+                title.setText(R.string.txt_giroscopo);
                 break;
             case Sensor.TYPE_PROXIMITY:
                 image.setBackgroundResource(R.drawable.proximidad);
-                title.setText("PROXIMIDAD");
+                title.setText(R.string.txt_proximidad);
                 break;
             case Sensor.TYPE_ACCELEROMETER:
                 image.setBackgroundResource(R.drawable.acelerometro);
-                title.setText("ACELEROMETRO");
+                title.setText(R.string.txt_acelerometro);
                 break;
         }
     }
