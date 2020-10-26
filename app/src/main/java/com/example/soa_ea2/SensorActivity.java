@@ -10,13 +10,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.Arrays;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -104,7 +101,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @SuppressLint("NewApi")
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.i("######", Arrays.toString(event.values));
         synchronized (this) {
             switch (sensorType){
                 case Sensor.TYPE_LIGHT:
