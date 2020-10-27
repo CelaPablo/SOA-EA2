@@ -46,9 +46,9 @@ public class EventActivity extends AppCompatActivity {
         int index = preferences.getInt(Constantes.INDEX, 0);
 
         int indice;
-        for(indice = 0; indice <= index; indice++){
+        for(indice = 0; indice < index; indice++){
             String str = preferences.getString(indice + "", "");
-            list.add(str);
+            list.add(indice + ")" +str);
         }
     }
 

@@ -28,19 +28,21 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     private long timeNow, timeOld;
 
+    private String valueOne = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
+        timeOld = System.currentTimeMillis();
 
         Intent intent = getIntent();
         shared = intent.getStringExtra("shared");
         sensorType = intent.getIntExtra("type", 1);
+        manager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         preferences = getSharedPreferences(shared, MODE_PRIVATE);
         index = preferences.getInt(Constantes.INDEX, 0);
-
-        manager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         title = findViewById(R.id.txtTitle);
         valor1 = findViewById(R.id.txtValue1);
@@ -50,8 +52,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         image = findViewById(R.id.image);
         Button back = findViewById(R.id.btn_back);
         Button events = findViewById(R.id.btn_event);
-
-        timeOld = System.currentTimeMillis();
 
         changeTitleAndImage(sensorType);
 
@@ -104,70 +104,47 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         synchronized (this) {
             switch (sensorType){
                 case Sensor.TYPE_LIGHT:
-                    sensorLuz(event.values[0]);
+                case Sensor.TYPE_PROXIMITY:
+                    sensorProximidadLuz(event.values[0]);
                     break;
                 case Sensor.TYPE_GYROSCOPE:
-                    if(event.values.length == 3) {
-                        sensorGiroscopo(event.values[0], event.values[1] , event.values[2]);
-                    } else {
-                        sensorGiroscopo(event.values[0], event.values[0] , event.values[0]);
-                    }
-                    break;
-                case Sensor.TYPE_PROXIMITY:
-                    sensorProximidad(event.values[0]);
-                    break;
                 case Sensor.TYPE_ACCELEROMETER:
                     if(event.values.length == 3) {
-                        sensorAcelerometro(event.values[0], event.values[1], event.values[2]);
+                        sensorAcelerometroGiroscopo(event.values[0], event.values[1] , event.values[2]);
                     } else {
-                        sensorAcelerometro(event.values[0], event.values[0], event.values[0]);
+                        sensorAcelerometroGiroscopo(event.values[0], event.values[0] , event.values[0]);
                     }
                     break;
             }
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private void sensorAcelerometro(float value, float value1, float value2) {
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    private void sensorAcelerometroGiroscopo(float value, float value1, float value2) {
         timeNow = System.currentTimeMillis();
-        valor1.setText("X: " + value);
-        valor2.setText("Y: " + value1);
-        valor3.setText("Z: " + value2);
+        valueOne = " X: " + String.format("%.3f", value);
+        String valueTwo = " Y: " + String.format("%.3f", value1);
+        String valueThree = " Z: " + String.format("%.3f", value2);
+        String valueToSave = valueOne + valueTwo + valueThree;
+
         if(timeNow - timeOld > Constantes.MILLIS) {
+            valor1.setText(valueOne);
+            valor2.setText(valueTwo);
+            valor3.setText(valueThree);
             timeOld = System.currentTimeMillis();
-            saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
+            saveInSharedPreferences(valueToSave);
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private void sensorProximidad(float value) {
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    private void sensorProximidadLuz(float value) {
         timeNow = System.currentTimeMillis();
-        valor1.setText("X: " + value);
+        valueOne = " X: " + String.format("%.3f", value);
+
         if(timeNow - timeOld > Constantes.MILLIS && value != 0) {
+            valor1.setText(valueOne);
+            saveInSharedPreferences(valueOne);
             timeOld = System.currentTimeMillis();
-            saveInSharedPreferences("X: " + value);
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void sensorGiroscopo(float value, float value1, float value2) {
-        timeNow = System.currentTimeMillis();
-        valor1.setText("X: " + value);
-        valor2.setText("Y: " + value1);
-        valor3.setText("Z: " + value2);
-        if(timeNow - timeOld > Constantes.MILLIS) {
-            timeOld = System.currentTimeMillis();
-            saveInSharedPreferences("X: " + value + " Y: " + value1 + " Z: " + value2);
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void sensorLuz(float value) {
-        timeNow = System.currentTimeMillis();
-        valor1.setText("X: " + value);
-        if(timeNow - timeOld > Constantes.MILLIS && value != 0) {
-            timeOld = System.currentTimeMillis();
-            saveInSharedPreferences("X: " + value);
         }
     }
 
