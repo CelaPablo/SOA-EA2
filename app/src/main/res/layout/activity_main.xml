@@ -51,13 +51,30 @@
         android:id="@+id/btn_luz"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:background="@drawable/custom_buttom_red"
+        android:background="@drawable/custom_button_orange"
         android:text="@string/txt_luz"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_proximidad" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_buttom_red"
+        android:drawableStart="@android:drawable/ic_lock_power_off"
+        android:drawableLeft="@android:drawable/ic_lock_power_off"
+        android:padding="16dp"
+        android:text="@string/txt_logout"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

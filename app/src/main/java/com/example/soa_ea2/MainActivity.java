@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         Button proximidad = findViewById(R.id.btn_proximidad);
         Button acelerometro = findViewById(R.id.btn_acelerometro);
 
+        Button logout = findViewById(R.id.btn_logout);
+
         configurarBroadcastReciever();
 
         luz.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +79,18 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, SensorActivity.class);
                 intent.putExtra("type", Sensor.TYPE_ACCELEROMETER);
                 intent.putExtra("shared", Constantes.SHARED_ACELEROMETRO);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = User.getInstance();
+                user.setDefaultUSer();
+
+                intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

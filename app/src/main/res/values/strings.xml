@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SOA - EA2</string>
+    <string name="app_name">EA2 - Cela Pablo</string>
     <string name="title_activity_login">LoginActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -33,4 +33,5 @@
     <string name="txt_atras">ATRAS</string>
     <string name="txt_eventos_del_sensor">EVENTOS DEL SENSOR</string>
     <string name="txt_mediciones">MEDICIONES</string>
+    <string name="txt_logout">Logout</string>
 </resources>

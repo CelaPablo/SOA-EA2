@@ -57,6 +57,17 @@ public class User {
         this.tokenRefresh = tokenRefresh;
     }
 
+    public void setDefaultUSer() {
+        this.dni = "";
+        this.name = "";
+        this.email = "";
+        this.token = "";
+        this.lastname = "";
+        this.password = "";
+        this.comision = "";
+        this.tokenRefresh = "";
+    }
+
     public boolean checkFroRegister(Context context) {
         String text;
         text = getName().trim();
