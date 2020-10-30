@@ -10,7 +10,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
 
-public class Battery extends AppCompatActivity {
+public class BatteryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class Battery extends AppCompatActivity {
             public void onTick(long millisUntilFinished) { }
 
             public void onFinish() {
-                Intent intent = new Intent(Battery.this, LoginActivity.class);
+                Intent intent = new Intent(BatteryActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
