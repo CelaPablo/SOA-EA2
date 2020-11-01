@@ -19,6 +19,10 @@ import java.net.URL;
 public class RefreshToken extends Thread  {
 
     public void run() {
+        /*
+        Cuando se crea el hilo, se duerme durante 28 minutos
+        cuando se "despierta", realiza el token refresh y se llama a si mismo
+        */
         try {
             Thread.sleep(Constantes.MILLIS_TO_SLEEP);
         } catch (InterruptedException e) {

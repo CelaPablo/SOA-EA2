@@ -68,6 +68,7 @@ public class User {
         this.tokenRefresh = "";
     }
 
+    /* Verificación de campos para el Register */
     public boolean checkFroRegister(Context context) {
         String text;
         text = getName().trim();
@@ -110,6 +111,7 @@ public class User {
         return true;
     }
 
+    /* Verificación de campos para el Login */
     public boolean checkForLogin(Context context) {
         String text;
 
@@ -129,6 +131,7 @@ public class User {
         return true;
     }
 
+    /* Funcion que muestra el error en pantalla */
     private void error(Context context, String s) {
         Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
     }

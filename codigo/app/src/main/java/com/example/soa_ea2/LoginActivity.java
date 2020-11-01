@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /* Callback que recibe la respuesta del servidor */
     public class CallbackLogin extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             try{

@@ -126,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /* Callback donde se recibe la respuesta del hilo donde corre el service. */
     public class CallbackRegister extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             try{

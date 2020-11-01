@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Callback que recibe la respuesta - Solo muestra la respuesta en un Log */
     public static class CallbackEvent extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             String dataJsonString = intent.getStringExtra("dataJson");

@@ -40,6 +40,11 @@ public class EventActivity extends AppCompatActivity {
         });
     }
 
+
+    /*
+    Funcion que lee el archivo de SharedPreferences y
+    guarda los valores en una lista para mostrarlos en pantalla
+    */
     private void completeList(Intent intent) {
         String shared = intent.getStringExtra("shared");
         SharedPreferences preferences = getSharedPreferences(shared, MODE_PRIVATE);

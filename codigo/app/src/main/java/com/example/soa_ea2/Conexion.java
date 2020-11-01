@@ -16,7 +16,7 @@ public class Conexion {
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
         if(!isConnected) {
-            Toast.makeText(context, "Sin conexion a internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Sin conexion a internet.", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

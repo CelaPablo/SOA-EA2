@@ -74,6 +74,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         });
     }
 
+    /*
+    Funcion para cambiar el titulo y la imagen que se muestra en la Activity,
+    dependiendo del sensor seleccionado
+    */
     private void changeTitleAndImage(int sensorType) {
         switch (sensorType) {
             case Sensor.TYPE_LIGHT:
@@ -119,6 +123,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         }
     }
 
+    /*
+    Funcion para mostar y guardar datos de los sensores de acelerometro y giroscopo.
+    Los valores se guardan cada medio segundo.
+    */
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void sensorAcelerometroGiroscopo(float value, float value1, float value2) {
         timeNow = System.currentTimeMillis();
@@ -136,6 +144,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         }
     }
 
+    /*
+    Funcion para mostar y guardar datos de los sensores de proximidad y de luz.
+    Los valores se guardan cada medio segundo, si estos son distintos de 0.
+    */
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void sensorProximidadLuz(float value) {
         timeNow = System.currentTimeMillis();
@@ -177,6 +189,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    /* Funcion para guardar datos en SharedPreferences */
     private void saveInSharedPreferences(String newSharedData) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(String.valueOf(index++), newSharedData);
