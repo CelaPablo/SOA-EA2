@@ -106,20 +106,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onSensorChanged(SensorEvent event) {
         synchronized (this) {
-            switch (sensorType){
-                case Sensor.TYPE_LIGHT:
-                case Sensor.TYPE_PROXIMITY:
-                    sensorProximidadLuz(event.values[0]);
-                    break;
-                case Sensor.TYPE_GYROSCOPE:
-                case Sensor.TYPE_ACCELEROMETER:
-                    if(event.values.length == 3) {
-                        sensorAcelerometroGiroscopo(event.values[0], event.values[1] , event.values[2]);
-                    } else {
-                        sensorAcelerometroGiroscopo(event.values[0], event.values[0] , event.values[0]);
-                    }
-                    break;
-            }
+            if(event.values.length == 3)
+                sensorAcelerometroGiroscopo(event.values[0], event.values[1] , event.values[2]);
+            else
+                sensorProximidadLuz(event.values[0]);
         }
     }
 
@@ -166,27 +156,21 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     protected void onPause() {
         super.onPause();
-        stopSensors();
+        stopSensor();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startSensors();
+        startSensor();
     }
 
-    private void stopSensors() {
-        manager.unregisterListener(this, manager.getDefaultSensor(Sensor.TYPE_LIGHT));
-        manager.unregisterListener(this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE));
-        manager.unregisterListener(this, manager.getDefaultSensor(Sensor.TYPE_PROXIMITY));
-        manager.unregisterListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+    private void stopSensor() {
+        manager.unregisterListener(this, manager.getDefaultSensor(sensorType));
     }
 
-    private void startSensors() {
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), SensorManager.SENSOR_DELAY_NORMAL);
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
-        manager.registerListener(this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    private void startSensor() {
+        manager.registerListener(this, manager.getDefaultSensor(sensorType), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     /* Funcion para guardar datos en SharedPreferences */
