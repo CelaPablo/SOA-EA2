@@ -23,7 +23,8 @@ public class Constantes {
     public final static String TYPE_EVENT = "Uso de sensor";
 
     public final static long MILLIS = 100;
-    public final static long MILLIS_TO_SLEEP = 1680000;
+    //public final static long MILLIS_TO_SLEEP = 1680000;
+    public final static long MILLIS_TO_SLEEP = 10000;
 
     public final static String INDEX = "index";
     public final static String SHARED_LUZ = "SHARED_LUZ";

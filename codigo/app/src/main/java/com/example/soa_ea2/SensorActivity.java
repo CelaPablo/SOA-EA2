@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.soa_ea2.services.RefreshToken;
+
 public class SensorActivity extends AppCompatActivity implements SensorEventListener {
 
     private String shared;
@@ -157,12 +159,15 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     protected void onPause() {
         super.onPause();
         stopSensor();
+        RefreshToken.getInstance().doStop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         startSensor();
+        if(!RefreshToken.getInstance().isRunning())
+            RefreshToken.getInstance().start();
     }
 
     private void stopSensor() {

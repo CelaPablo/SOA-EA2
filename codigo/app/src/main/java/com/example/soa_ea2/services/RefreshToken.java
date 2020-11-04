@@ -18,31 +18,60 @@ import java.net.URL;
 
 public class RefreshToken extends Thread  {
 
+    private boolean running;
+    public static RefreshToken instance = null;
+
+    public static RefreshToken getInstance() {
+        if(instance == null) {
+            instance = new RefreshToken();
+        }
+
+        instance.setRunning(true);
+        return instance;
+    }
+
+    private void setRunning(boolean b) {
+        this.running = b;
+    }
+
+    private RefreshToken() { }
+
     public void run() {
         /*
         Cuando se crea el hilo, se duerme durante 28 minutos
         cuando se "despierta", realiza el token refresh y se llama a si mismo
         */
-        try {
-            Thread.sleep(Constantes.MILLIS_TO_SLEEP);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        String response = ejecutarRefresh();
-
-        try {
-            JSONObject jsonResponse = new JSONObject(response);
-            String success = jsonResponse.getString("success");
-            if(success.equals("true")) {
-                User user = User.getInstance();
-                user.setToken(jsonResponse.getString("token"));
-                user.setTokenRefresh(jsonResponse.getString("token_refresh"));
-                new RefreshToken().start();
+        while (running) {
+            try {
+                Thread.sleep(Constantes.MILLIS_TO_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+            if(running) {
+                String response = ejecutarRefresh();
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    String success = jsonResponse.getString("success");
+                    if(success.equals("true")) {
+                        User user = User.getInstance();
+                        user.setToken(jsonResponse.getString("token"));
+                        user.setTokenRefresh(jsonResponse.getString("token_refresh"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+    }
+
+    public void doStop() {
+        this.running = false;
+    }
+
+    public boolean isRunning() {
+        return this.running;
     }
 
     private String ejecutarRefresh() {

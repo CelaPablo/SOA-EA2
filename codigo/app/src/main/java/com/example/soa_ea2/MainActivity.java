@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.soa_ea2.services.RefreshToken;
 import com.example.soa_ea2.services.ServiceHTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,12 +105,15 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        RefreshToken.getInstance().doStop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         configurarBroadcastReciever();
+        if(!RefreshToken.getInstance().isRunning())
+            RefreshToken.getInstance().start();
     }
 
     private void configurarBroadcastReciever() {

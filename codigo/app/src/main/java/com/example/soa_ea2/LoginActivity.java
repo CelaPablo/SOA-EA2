@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                 user.setTokenRefresh(data.getString("token_refresh"));
 
                 Intent i = new Intent(context, MainActivity.class);
-                new RefreshToken().start();
+                RefreshToken.getInstance().start();
                 startActivity(i);
                 finish();
             } catch (JSONException e){
