@@ -138,7 +138,11 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setTokenRefresh(data.getString("token_refresh"));
 
                 Intent i = new Intent(context, MainActivity.class);
-                RefreshToken.getInstance().start();
+                RefreshToken refresh = RefreshToken.getInstance();
+                if(refresh.getmPaused())
+                    refresh.doResume();
+                else
+                    refresh.start();
                 startActivity(i);
                 finish();
             } catch (JSONException e){

@@ -19,6 +19,8 @@ import java.net.URL;
 public class RefreshToken extends Thread  {
 
     private boolean running;
+    private boolean mPaused;
+    private Object mPauseLock;
     public static RefreshToken instance = null;
 
     public static RefreshToken getInstance() {
@@ -26,17 +28,16 @@ public class RefreshToken extends Thread  {
             instance = new RefreshToken();
         }
 
-        instance.setRunning(true);
         return instance;
     }
 
-    private void setRunning(boolean b) {
-        this.running = b;
+    private RefreshToken() {
+        mPauseLock = new Object();
+        mPaused = false;
     }
 
-    private RefreshToken() { }
-
     public void run() {
+        instance.setRunning(true);
         /*
         Cuando se crea el hilo, se duerme durante 28 minutos
         cuando se "despierta", realiza el token refresh y se llama a si mismo
@@ -63,15 +64,43 @@ public class RefreshToken extends Thread  {
                     e.printStackTrace();
                 }
             }
+
+            synchronized (mPauseLock) {
+                while (mPaused) {
+                    try {
+                        mPauseLock.wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
         }
     }
 
     public void doStop() {
-        this.running = false;
+        synchronized (mPauseLock) {
+            this.running = false;
+            mPaused = true;
+        }
+    }
+
+    public void doResume() {
+        synchronized (mPauseLock) {
+            mPaused = false;
+            this.running = true;
+            mPauseLock.notifyAll();
+        }
+    }
+
+    private void setRunning(boolean b) {
+        this.running = b;
     }
 
     public boolean isRunning() {
         return this.running;
+    }
+
+    public boolean getmPaused() {
+        return this.mPaused;
     }
 
     private String ejecutarRefresh() {

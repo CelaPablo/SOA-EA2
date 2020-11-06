@@ -166,8 +166,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     protected void onResume() {
         super.onResume();
         startSensor();
-        if(!RefreshToken.getInstance().isRunning())
-            RefreshToken.getInstance().start();
+        RefreshToken refresh = RefreshToken.getInstance();
+        if(!refresh.isRunning())
+            refresh.doResume();
     }
 
     private void stopSensor() {

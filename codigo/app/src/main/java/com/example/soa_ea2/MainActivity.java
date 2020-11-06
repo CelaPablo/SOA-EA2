@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 User user = User.getInstance();
                 user.setDefaultUSer();
-
+                RefreshToken.getInstance().doStop();
                 intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -112,8 +112,9 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         configurarBroadcastReciever();
-        if(!RefreshToken.getInstance().isRunning())
-            RefreshToken.getInstance().start();
+        RefreshToken refresh = RefreshToken.getInstance();
+        if(!refresh.isRunning())
+            refresh.doResume();
     }
 
     private void configurarBroadcastReciever() {
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive (Context context, Intent intent){
             String dataJsonString = intent.getStringExtra("dataJson");
             assert dataJsonString != null;
-            Log.i("RESPONSE EVENT", dataJsonString);
+            Log.i("## RESPONSE EVENT ##", dataJsonString);
         }
     }
 }

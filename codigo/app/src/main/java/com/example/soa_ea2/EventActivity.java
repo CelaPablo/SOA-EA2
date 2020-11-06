@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.soa_ea2.services.RefreshToken;
+
 import java.util.ArrayList;
 
 public class EventActivity extends AppCompatActivity {
@@ -55,6 +57,20 @@ public class EventActivity extends AppCompatActivity {
             String str = preferences.getString(indice + "", "");
             list.add(indice + ")" +str);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        RefreshToken.getInstance().doStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RefreshToken refresh = RefreshToken.getInstance();
+        if(!refresh.isRunning())
+            refresh.doResume();
     }
 
     @Override
