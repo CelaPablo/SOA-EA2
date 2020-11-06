@@ -144,9 +144,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private void sensorProximidadLuz(float value) {
         timeNow = System.currentTimeMillis();
         valueOne = " X: " + String.format("%.3f", value);
-
+        valor1.setText(valueOne);
         if(timeNow - timeOld > Constantes.MILLIS && value != 0) {
-            valor1.setText(valueOne);
             saveInSharedPreferences(valueOne);
             timeOld = System.currentTimeMillis();
         }

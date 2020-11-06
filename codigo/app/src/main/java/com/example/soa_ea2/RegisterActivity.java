@@ -130,6 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
     public class CallbackRegister extends BroadcastReceiver {
         public void onReceive (Context context, Intent intent){
             try{
+                spinner.setVisibility(View.GONE);
                 String dataJsonString = intent.getStringExtra("dataJson");
                 assert dataJsonString != null;
                 JSONObject data = new JSONObject(dataJsonString);
